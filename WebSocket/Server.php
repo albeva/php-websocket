@@ -106,13 +106,13 @@ class Server
 	 * Create new WebSocket server instance.
 	 *
 	 * Configuration options:
-	 * host			- host address to bind
-	 * port			- port to listen on
-	 * clientClass	- class name of the client
-	 * serializer	- serializer short name (ini, json, php, xml) or a class
-	 *				  name or an instance of a class that implements the
-	 *				  Serializer interface.
-	 * tick			- periodic ticker callback for clients.
+	 * host         - host address to bind
+	 * port         - port to listen on
+	 * clientClass  - class name of the client
+	 * serializer   - serializer short name (ini, json, php, xml) or a class
+	 *                name or an instance of a class that implements the
+	 *                Serializer interface.
+	 * tick         - periodic ticker callback for clients.
 	 *
 	 * @param array $config
 	 */
@@ -349,85 +349,86 @@ class Server
 
 		if ($bytes === false) {
 			$this->logSocketError();
+			return;
 		} else if ($bytes === 0) {
 			if (isset($this->clients[$id])) {
 				$this->disconnect($this->clients[$id]);
 			} else {
 				$this->close($socket);
 			}
-		} else {
-			// has a client. process
-			if (isset($this->clients[$id])) {
-				// vars
-				$client     = $this->clients[$id];
-				$protocol   = $client->getProtocol();
-				$serializer = $client->getSerializer();
+			return;
+		}
+		// has a client. process
+		if (isset($this->clients[$id])) {
+			// vars
+			$client     = $this->clients[$id];
+			$protocol   = $client->getProtocol();
+			$serializer = $client->getSerializer();
 
-				// decode data and check it
-				$data = $protocol->decode($socket, $buffer);
-				if ($data === true) {
-					return;
-				} else if ($data === false) {
-					$this->log("Client #$id invalid data");
-					return;
-				} else if ($data === null) {
-					$this->disconnect($client);
-					return;
-				}
-
-				// process data
-				$this->log("Client #$id >>> " . $data);
-				if ($serializer) {
-					$data = $serializer->unserialize($data);
-				}
-				// send to the client
-				$client->receive($data);
+			// decode data and check it
+			$data = $protocol->decode($socket, $buffer);
+			if ($data === true) {
+				return;
+			} else if ($data === false) {
+				$this->log("Client #$id invalid data");
+				return;
+			} else if ($data === null) {
+				$this->disconnect($client);
 				return;
 			}
 
-			// get request information
-			$http = $this->parseHttp($buffer);
-
-			// is proper WebSocket connection?
-			if (!$this->validateHeaders($http['headers'])) {
-				$this->error("Invalid connection request");
-				$this->log($http);
-				$this->close($socket);
-				return;
+			// process data
+			$this->log("Client #$id >>> " . $data);
+			if ($serializer) {
+				$data = $serializer->unserialize($data);
 			}
+			// send to the client
+			$client->receive($data);
+			return;
+		}
 
-			// find protocol to handle the connection
-			// if found create client class and return
-			foreach ($this->protocols as $protocol) {
-				if ($info = $protocol->detect($http)) {
-					$class  = $this->clientClass;
-					$client = new $class($id, $socket, $this, $protocol, $this->serializer);
-					if ($client->onConnect($http, $info['Host'], $info['Origin'])) {
-						if ($protocol->handshake($socket, $http)) {
-							$this->clients[$id] = $client;
-							$client->setConnected(true);
-							$client->onConnected();
-							return;
-						} else {
-							$protocol->disconnect($socket);
-							$this->close($socket);
-							$this->error("Handshake failed with " . get_class($protocol));
-							$this->log($http);
-							return;
-						}
+		// get request information
+		$http = $this->parseHttp($buffer);
+
+		// is proper WebSocket connection?
+		if (!$this->validateHeaders($http['headers'])) {
+			$this->error("Invalid connection request");
+			$this->log($http);
+			$this->close($socket);
+			return;
+		}
+
+		// find protocol to handle the connection
+		// if found create client class and return
+		foreach ($this->protocols as $protocol) {
+			if ($info = $protocol->detect($http)) {
+				$class  = $this->clientClass;
+				$client = new $class($id, $socket, $this, $protocol, $this->serializer);
+				if ($client->onConnect($http, $info['Host'], $info['Origin'])) {
+					if ($protocol->handshake($socket, $http)) {
+						$this->clients[$id] = $client;
+						$client->setConnected(true);
+						$client->onConnected();
+						return;
 					} else {
 						$protocol->disconnect($socket);
 						$this->close($socket);
+						$this->error("Handshake failed with " . get_class($protocol));
+						$this->log($http);
 						return;
 					}
+				} else {
+					$protocol->disconnect($socket);
+					$this->close($socket);
+					return;
 				}
 			}
-
-			// no protocol found to handle the connection
-			$this->close($socket);
-			$this->error("No protocol found to handle the connection");
-			$this->log($http);
 		}
+
+		// no protocol found to handle the connection
+		$this->close($socket);
+		$this->error("No protocol found to handle the connection");
+		$this->log($http);
 	}
 
 
