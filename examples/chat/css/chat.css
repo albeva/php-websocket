@@ -43,9 +43,20 @@ body, html {
   color: #999;
 }
 #chat-area em {
+  display: block;
   font-weight: bold;
   font-style: normal;
   padding-right: 1ex;
+}
+#chat-area p.system {
+  font-style: italic;
+}
+#chat-area p.system em {
+  display: inline;
+  font-style: italic;
+}
+#chat-area span {
+  display: block;
 }
 
 #input-area {
@@ -103,6 +114,7 @@ body, html {
   overflow-y: auto;
 }
 #list .user {
+  cursor: pointer;
   font-weight: bold;
   font-size: 1.1em;
   height: 40px;
@@ -122,13 +134,11 @@ body, html {
   margin-top: 5px;
 }
 #list .user.online {
-  cursor: pointer;
   background-color: #58ab58;
   color: #fff;
   border-color: #468a46;
 }
 #list .user.offline {
-  cursor: pointer;
   background-color: #d44a44;
   color: #fff;
   border-color: #ba312b;

@@ -275,6 +275,20 @@ class Server
 
 
 	/**
+	 * Get client by id
+	 *
+	 * @param int $id
+	 * @return \WebSocket\Client
+	 */
+	function getClient($id)
+	{
+		if (isset($this->clients[$id])) {
+			return $this->clients[$id];
+		}
+	}
+
+
+	/**
 	 * Listen for incoming socket connections and handle them
 	 *
 	 * TODO add timer callbacks to clients (tick)

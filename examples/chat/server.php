@@ -64,14 +64,20 @@ class Chatter extends WebSocket\Client
 			unset($copy['action']);
 			self::$clients[$this->id] = $copy;
 		}
-		$this->sendAll($msg);
+		if (isset($msg['target'])) {
+			if (isset(self::$clients[$msg['target']])) {
+				$this->server->getClient($msg['target'])->send($msg);
+			}
+		} else {
+			$this->sendAll($msg);
+		}
 	}
 }
 
 // Create server
 try {
 	$server = new WebSocket\Server(array(
-		'host'			=> 'localhost', // '173.203.111.216',
+		'host'			=> '173.203.111.216',
 		'port'			=> 12345,
 		'clientClass'	=> 'Chatter',
 		'serializer'	=> 'json'

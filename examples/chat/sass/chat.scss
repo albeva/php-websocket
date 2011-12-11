@@ -42,12 +42,23 @@ body, html {
 		}
 		&.offline {
 			color:      #999;
-		}
+		}		
 	}
 	em {
+	    display:        block;
 		font-weight:    bold;
 		font-style:     normal;
 		padding-right:  1ex;
+	}
+	p.system {
+		font-style:     italic;
+		em {
+		    display:        inline;
+			font-style:     italic;
+		}
+	}
+	span {
+		display:        block;
 	}
 }
 
@@ -96,6 +107,7 @@ body, html {
 #list {
 	overflow-y:     auto;
 	.user {
+	    cursor:         pointer;
 		font-weight:    bold;
 		font-size:      1.1em;
 		height:         40px;
@@ -109,13 +121,11 @@ body, html {
 			margin-top:     5px;
 		}
 		&.online {
-			cursor:         pointer;
 			background-color:#58ab58;
 			color:          #fff;
 			border-color:   darken(#58ab58, 10%);
 		}
 		&.offline {
-			cursor:         pointer;
 			background-color:#d44a44;
 			color:          #fff;
 			border-color:   darken(#d44a44, 10%);

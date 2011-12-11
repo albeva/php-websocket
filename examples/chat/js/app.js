@@ -19,7 +19,7 @@ $(function() {
 		clients     = {},
 		connected   = false,
 		socket      = null,
-		host        = 'ws://localhost:12345',
+		host        = 'ws://173.203.111.216:12345',
 		WSocket     = window.MozWebSocket || window.WebSocket,
 		myself      = null,
 		setSettings, send, connect, close, onOpen, onMessage, onClose, say;
@@ -107,9 +107,10 @@ $(function() {
 	onMessage = function(msg){
 		var data    = $.parseJSON(msg.data),
 			id      = data.id;
-
 		if (data.action == 'message') {
 			clients[id].say(data.message);
+		} else if (data.action == 'nudge') {
+			clients[id].say('sent you a nudge', true);
 		} else if (data.action == 'notify') {
 			clients[id] = myself;
 			myself.connect(id);
@@ -129,8 +130,10 @@ $(function() {
 		} else if (data.action == 'connect') {
 			if (id != myself.getId()) {
 				clients[id] = new Chat.Client(data);
+				clients[id].say("connected", true);
 			}
 		} else if (data.action == 'disconnect') {
+			clients[id].say("disconnected", true);
 			clients[id].disconnect();
 			delete clients[id];
 		}
@@ -200,7 +203,17 @@ $(function() {
 	ui.getDlgEl().find('a.save').click(setSettings);
 	ui.getDlgEl().find('form').submit(setSettings);
 	ui.getDlgEl().find('a.disconnect').click(close);
-//	ui.showDetails();
+	ui.showDetails();
+
+	// nudge others
+	ui.getListEl().on('click', '.client', function(){
+		console.info($(this).data('client'));
+		send({
+			action: 'nudge',
+			target: $(this).data('client').getId()
+		});
+		$(this).data('client').say("was nudged by you", true);
+	});
 
 	// send the message
 	$('#message').keypress(function(e){

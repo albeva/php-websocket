@@ -32,6 +32,10 @@ Chat.Client = function(options) {
 		tagList = ui.getListEl(),
 		update, say, connect, disconnect, getInfo, getId;
 
+	// track last person who said anything
+	Chat.Client.lastId = false;
+	Chat.Client.lastMsg = null;
+
 	/**
 	 * Update user information
 	 *
@@ -56,14 +60,31 @@ Chat.Client = function(options) {
 	 * @param {String} message
 	 * @method
 	 */
-	say = function(message) {
-		var msg = $('<p class="' + msgSel + '"/>')
-			.text(message)
-			.prepend($('<em />').text(name));
-		chatEl.append(msg);
+	say = function(message, system) {
+		if (Chat.Client.lastId == id && Chat.Client.lastMsg && !system) {
+			Chat.Client.lastMsg.append($('<span />').text(message));
+		} else {
+			// create message element
+			var msg = $('<p class="' + msgSel + '"/>')
+				.text(message)
+				.prepend($('<em />').text(name));
+			if (system) msg.addClass('system');
+			// add it to the chat
+			chatEl.append(msg);
+
+			// don't allow system messages to be grouped
+			if (system) {
+				Chat.Client.lastMsg = null;
+			} else {
+				Chat.Client.lastMsg = msg;
+			}
+		}
+		// scroll the chat
 		chatEl.stop().animate({
 			scrollTop: chatEl.prop("scrollHeight") - chatEl.height()
 		}, 200);
+		// last client id for grouping
+		Chat.Client.lastId = id;
 	};
 
 	/**
@@ -129,7 +150,7 @@ Chat.Client = function(options) {
 	tagList.append(tagEl);
 
 	// public interface
-	return {
+	$api = {
 		update:     update,
 		say:        say,
 		disconnect: disconnect,
@@ -137,4 +158,6 @@ Chat.Client = function(options) {
 		getInfo:    getInfo,
 		getId:      getId
 	};
+	tagEl.data('client', $api);
+	return $api;
 };
