@@ -71,7 +71,7 @@ class Chatter extends WebSocket\Client
 // Create server
 try {
 	$server = new WebSocket\Server(array(
-		'host'			=> '173.203.111.216',
+		'host'			=> 'localhost', // '173.203.111.216',
 		'port'			=> 12345,
 		'clientClass'	=> 'Chatter',
 		'serializer'	=> 'json'

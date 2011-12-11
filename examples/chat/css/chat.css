@@ -39,6 +39,9 @@ body, html {
 #chat-area p:nth-child(even) {
   background: #f6f6f6;
 }
+#chat-area p.offline {
+  color: #999;
+}
 #chat-area em {
   font-weight: bold;
   font-style: normal;
@@ -47,6 +50,22 @@ body, html {
 
 #input-area {
   margin: 10px 0 0 0;
+}
+.no-flexbox #input-area {
+  position: relative;
+}
+.no-flexbox #input-area input {
+  display: block;
+  width: auto;
+  margin-right: 10px;
+}
+.no-flexbox #input-area button {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: block;
+}
+.flexbox #input-area {
   display: -moz-box;
   display: -webkit-box;
   display: -ms-box;
@@ -61,14 +80,14 @@ body, html {
   box-align: stretch;
   width: 100%;
 }
-#input-area input {
+.flexbox #input-area input {
   display: block;
   -moz-box-flex: 1;
   -webkit-box-flex: 1;
   -ms-box-flex: 1;
   box-flex: 1;
 }
-#input-area button {
+.flexbox #input-area button {
   display: block;
   margin-left: 10px;
 }
@@ -102,13 +121,13 @@ body, html {
 #list .user + .user {
   margin-top: 5px;
 }
-#list .user.connected {
+#list .user.online {
   cursor: pointer;
   background-color: #58ab58;
   color: #fff;
   border-color: #468a46;
 }
-#list .user.disconnected {
+#list .user.offline {
   cursor: pointer;
   background-color: #d44a44;
   color: #fff;

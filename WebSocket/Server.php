@@ -287,7 +287,7 @@ class Server
 
 		while (true) {
 			$sockets = $this->sockets;
-			$changed = socket_select($sockets, $w, $e, 0);
+			$changed = socket_select($sockets, $w, $e, null);
 			if ($changed === false) {
 				$this->logSocketError();
 			} else if ($changed > 0) {

@@ -40,6 +40,9 @@ body, html {
 		&:nth-child(even) {
 			background:     #f6f6f6;
 		}
+		&.offline {
+			color:      #999;
+		}
 	}
 	em {
 		font-weight:    bold;
@@ -51,17 +54,33 @@ body, html {
 // user input area
 #input-area {
 	margin:         10px 0 0 0;
-	@include        display-box;
-	@include        box-orient(horizontal);
-	@include        box-align(stretch);
-	width:          100%;
-	input {
-	    display:        block;
-		@include        box-flex(1);
+	.no-flexbox & {
+	    position:       relative;
+		input {
+			display:        block;
+			width:          auto;
+			margin-right:   10px;
+		}
+		button {
+			position:       absolute;
+			top:            0;
+			right:          0;
+			display:        block;
+		}
 	}
-	button {
-	    display:        block;
-		margin-left:    10px;
+	.flexbox & {
+		@include        display-box;
+		@include        box-orient(horizontal);
+		@include        box-align(stretch);
+		width:          100%;
+		input {
+		    display:        block;
+			@include        box-flex(1);
+		}
+		button {
+		    display:        block;
+			margin-left:    10px;
+		}
 	}
 }
 
@@ -89,13 +108,13 @@ body, html {
 		& + .user {
 			margin-top:     5px;
 		}
-		&.connected {
+		&.online {
 			cursor:         pointer;
 			background-color:#58ab58;
 			color:          #fff;
 			border-color:   darken(#58ab58, 10%);
 		}
-		&.disconnected {
+		&.offline {
 			cursor:         pointer;
 			background-color:#d44a44;
 			color:          #fff;
