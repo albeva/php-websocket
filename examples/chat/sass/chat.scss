@@ -1,0 +1,135 @@
+//
+// PHP WebSocket library Chat demo
+//
+
+@import "compass";
+
+// the wrapper around the website
+#wrapper {
+	margin:         10px;
+}
+
+// wrap the main content
+#main {
+    position:       relative;
+}
+
+// left hand content area
+#content {
+	margin-right:   170px;
+}
+
+// header
+h1 {
+	margin:         10px 0;
+}
+
+body, html {
+	overflow:       auto;
+}
+
+// the chat area
+#chat-area {
+	border:         1px solid #aaa;
+	overflow-y:     auto;
+	@include        border-radius(3px);
+	@include        box-shadow(0px 0px 2px #aaa inset);
+	p {
+	    margin:         0;
+		padding:        0 5px;
+		&:nth-child(even) {
+			background:     #f6f6f6;
+		}
+	}
+	em {
+		font-weight:    bold;
+		font-style:     normal;
+		padding-right:  1ex;
+	}
+}
+
+// user input area
+#input-area {
+	margin:         10px 0 0 0;
+	@include        display-box;
+	@include        box-orient(horizontal);
+	@include        box-align(stretch);
+	width:          100%;
+	input {
+	    display:        block;
+		@include        box-flex(1);
+	}
+	button {
+	    display:        block;
+		margin-left:    10px;
+	}
+}
+
+// right hand sidebar
+#sidebar {
+	width:          160px;
+	position:       absolute;
+	top:            0px;
+	right:          0px;
+}
+
+// list of online users
+#list {
+	overflow-y:     auto;
+	.user {
+		font-weight:    bold;
+		font-size:      1.1em;
+		height:         40px;
+		background-repeat:no-repeat;
+		padding-left:   50px;
+		line-height:    40px;
+		border:         1px solid #eee;
+		@include        border-radius(3px);
+		overflow:       hidden;
+		& + .user {
+			margin-top:     5px;
+		}
+		&.connected {
+			cursor:         pointer;
+			background-color:#58ab58;
+			color:          #fff;
+			border-color:   darken(#58ab58, 10%);
+		}
+		&.disconnected {
+			cursor:         pointer;
+			background-color:#d44a44;
+			color:          #fff;
+			border-color:   darken(#d44a44, 10%);
+			text-decoration:underline;
+		}
+	}
+}
+
+// avatars
+@for $i from 1 through 8 {
+	.avatar-#{$i} {
+		background-image: url('../img/avatar-#{$i}.jpg');
+	}
+}
+
+// avatar selector
+.avatar-select {
+	list-style:     none;
+	margin:         0;
+	li {
+		width:          40px;
+		height:         40px;
+		float:          left;
+		margin-right:   3px;
+		cursor:         pointer;
+		border:         2px solid #fff;
+		opacity:        0.6;
+		@include        border-radius(3px);
+		@include        transition(all 250ms);
+		&.active {
+			opacity:        1.0;
+			border-color:   #58ab58;
+			@include        box-shadow(0px 0px 5px #58ab58);
+		}
+	}
+}

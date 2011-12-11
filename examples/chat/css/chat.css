@@ -1,0 +1,181 @@
+#wrapper {
+  margin: 10px;
+}
+
+#main {
+  position: relative;
+}
+
+#content {
+  margin-right: 170px;
+}
+
+h1 {
+  margin: 10px 0;
+}
+
+body, html {
+  overflow: auto;
+}
+
+#chat-area {
+  border: 1px solid #aaa;
+  overflow-y: auto;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  -o-border-radius: 3px;
+  -ms-border-radius: 3px;
+  -khtml-border-radius: 3px;
+  border-radius: 3px;
+  -moz-box-shadow: 0px 0px 2px #aaaaaa inset;
+  -webkit-box-shadow: 0px 0px 2px #aaaaaa inset;
+  -o-box-shadow: 0px 0px 2px #aaaaaa inset;
+  box-shadow: 0px 0px 2px #aaaaaa inset;
+}
+#chat-area p {
+  margin: 0;
+  padding: 0 5px;
+}
+#chat-area p:nth-child(even) {
+  background: #f6f6f6;
+}
+#chat-area em {
+  font-weight: bold;
+  font-style: normal;
+  padding-right: 1ex;
+}
+
+#input-area {
+  margin: 10px 0 0 0;
+  display: -moz-box;
+  display: -webkit-box;
+  display: -ms-box;
+  display: box;
+  -moz-box-orient: horizontal;
+  -webkit-box-orient: horizontal;
+  -ms-box-orient: horizontal;
+  box-orient: horizontal;
+  -moz-box-align: stretch;
+  -webkit-box-align: stretch;
+  -ms-box-align: stretch;
+  box-align: stretch;
+  width: 100%;
+}
+#input-area input {
+  display: block;
+  -moz-box-flex: 1;
+  -webkit-box-flex: 1;
+  -ms-box-flex: 1;
+  box-flex: 1;
+}
+#input-area button {
+  display: block;
+  margin-left: 10px;
+}
+
+#sidebar {
+  width: 160px;
+  position: absolute;
+  top: 0px;
+  right: 0px;
+}
+
+#list {
+  overflow-y: auto;
+}
+#list .user {
+  font-weight: bold;
+  font-size: 1.1em;
+  height: 40px;
+  background-repeat: no-repeat;
+  padding-left: 50px;
+  line-height: 40px;
+  border: 1px solid #eee;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  -o-border-radius: 3px;
+  -ms-border-radius: 3px;
+  -khtml-border-radius: 3px;
+  border-radius: 3px;
+  overflow: hidden;
+}
+#list .user + .user {
+  margin-top: 5px;
+}
+#list .user.connected {
+  cursor: pointer;
+  background-color: #58ab58;
+  color: #fff;
+  border-color: #468a46;
+}
+#list .user.disconnected {
+  cursor: pointer;
+  background-color: #d44a44;
+  color: #fff;
+  border-color: #ba312b;
+  text-decoration: underline;
+}
+
+.avatar-1 {
+  background-image: url("../img/avatar-1.jpg");
+}
+
+.avatar-2 {
+  background-image: url("../img/avatar-2.jpg");
+}
+
+.avatar-3 {
+  background-image: url("../img/avatar-3.jpg");
+}
+
+.avatar-4 {
+  background-image: url("../img/avatar-4.jpg");
+}
+
+.avatar-5 {
+  background-image: url("../img/avatar-5.jpg");
+}
+
+.avatar-6 {
+  background-image: url("../img/avatar-6.jpg");
+}
+
+.avatar-7 {
+  background-image: url("../img/avatar-7.jpg");
+}
+
+.avatar-8 {
+  background-image: url("../img/avatar-8.jpg");
+}
+
+.avatar-select {
+  list-style: none;
+  margin: 0;
+}
+.avatar-select li {
+  width: 40px;
+  height: 40px;
+  float: left;
+  margin-right: 3px;
+  cursor: pointer;
+  border: 2px solid #fff;
+  opacity: 0.6;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  -o-border-radius: 3px;
+  -ms-border-radius: 3px;
+  -khtml-border-radius: 3px;
+  border-radius: 3px;
+  -moz-transition: all 250ms;
+  -webkit-transition: all 250ms;
+  -o-transition: all 250ms;
+  transition: all 250ms;
+}
+.avatar-select li.active {
+  opacity: 1.0;
+  border-color: #58ab58;
+  -moz-box-shadow: 0px 0px 5px #58ab58;
+  -webkit-box-shadow: 0px 0px 5px #58ab58;
+  -o-box-shadow: 0px 0px 5px #58ab58;
+  box-shadow: 0px 0px 5px #58ab58;
+}

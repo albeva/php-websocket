@@ -1,114 +1,77 @@
+<!doctype html>
 <html>
 	<head>
-		<title>WebSocket</title>
-		<style>
-			html,body{font:normal 0.9em arial,helvetica;}
-			#log {width:440px; height:400px; border:1px solid #7F9DB9; overflow:auto;}
-			#msg {width:330px;}
-			span.user {
-				font-weight : bold;
-			}
-		</style>
-		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js" type="text/javascript"></script>
+		<meta charset="UTF-8">
+		<title>PHP WebSocket Chat sample</title>
+		<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" media="all">
+		<link rel="stylesheet" type="text/css" href="css/chat.css" media="all">
+		<script type="text/javascript">
+			window.WEB_SOCKET_SWF_LOCATION = "web-socket-js/WebSocketMain.swf";
+		</script>
 		<script type="text/javascript" src="web-socket-js/swfobject.js"></script>
 		<script type="text/javascript" src="web-socket-js/web_socket.js"></script>
-		<script type="text/javascript">
-			// the socket object var
-			var socket;
-			
-			// create the socket
-		    // Set URL of your WebSocketMain.swf here:
-		    window.WEB_SOCKET_SWF_LOCATION = "web-socket-js/WebSocketMain.swf";
-		    // Set this to dump debug message from Flash to console.log:
-		    window.WEB_SOCKET_DEBUG = true;
-			
-			// initalize
-			function init(){
-				var host = "ws://localhost:12345?hi=1&a[]=1&a[]=2";
-				try {
-					
-					var name = "User " + Math.floor(Math.random() * 1000);
-				
-					var WsClass = window.MozWebSocket || window.WebSocket;
-					socket = new WsClass(host);
-					// on open
-					socket.onopen    = function(msg){
-						log("Welcome - " + name);
-						// send our name
-						try {
-							var json = JSON.stringify({name : name});
-							socket.send(json);
-						} catch(ex) {
-							log(ex);
-						}
-					};
-					// on message
-					socket.onmessage = function(msg) {
-						var data = $.parseJSON(msg.data);
-						
-						// got a new message
-						if (data.message) {
-							log('<span class="user id-' + data.id + '">' + data.user + '</span> ' +
-							data.message);
-						}
-					};
-					// on disconnect
-					socket.onclose   = function(msg){
-						log("Disconnected - status " + this.readyState);
-						socket.close();
-						socket = null;
-					};
-				} catch(ex) {
-					log(ex);
-				}
-				// focus the input field
-				$("#msg").focus();
-			}
-			
-			// send the message
-			function send(){
-				// get the message
-				var el = $("#msg");
-				var msg = el.val();
-				if(!msg) return;
-				// reset the input box
-				el.val('');
-				el.focus();
-				// send
-				try {
-					var json = JSON.stringify({message : msg});
-					socket.send(json);
-				} catch(ex) {
-					log(ex);
-				}
-			}
-			// disconnect
-			function quit(){
-				log("Goodbye!");
-				socket.close();
-				socket=null;
-			}
-			// log the message
-			function log(msg) {
-				var el = $("#log");
-				el.append('<div>' + msg + '</div>');
-				el.scroll();
-			}
-			// trap enter key
-			function onkey(event){
-				if(event.keyCode==13){
-					send();
-				}
-			}
-			
-			// when ready
-		</script>
+		<script type="text/javascript" src="js/jquery-1.7.1.min.js"></script>
+		<script type="text/javascript" src="js/bootstrap-modal.js"></script>
+		<script type="text/javascript" src="js/chat.js"></script>
 	</head>
-	<body onload="init()">
-		<h3>Web sockets</h3>
-		<div id="log"></div>
-		<input id="msg" type="textbox" onkeypress="onkey(event)" />
-		<button onclick="send()">Send</button>
-		<button onclick="quit()">Quit</button>
+	<body>
+		<div id="wrapper">
+			<div class="page-header">
+				<h1>PHP WebSocket Chat sample</h1>
+			</div>
+			<div id="main">
+				<div id="content">
+					<div id="chat-area">
+					</div>
+					<div id="input-area">
+						<input type="text" name="message" id="message">
+						<button id="say" class="btn primary">Say</button>
+					</div>
+				</div>
+				<div id="sidebar">
+					<div id="list">
+						<div class="user avatar-1 me disconnected"
+						     data-controls-modal="details"
+						     data-backdrop="true">Connect</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- sample modal content -->
+		<div id="details" class="modal hide fade">
+			<div class="modal-header">
+				<a href="#" class="close">&times;</a>
+				<h3>Your details</h3>
+			</div>
+			<div class="modal-body">
+				<form action="?">
+					<div class="clearfix">
+						<label for="nickname">Your Nickname</label>
+						<div class="input">
+							<input id="nickname" class="xlarge" type="text" maxlength="10" name="nickname">
+						</div>
+					</div>
+					<div class="clearfix">
+						<label>Your Avatar</label>
+						<div class="input">
+							<ul class="avatar-select">
+								<li class="avatar-1 active"></li>
+								<li class="avatar-2"></li>
+								<li class="avatar-3"></li>
+								<li class="avatar-4"></li>
+								<li class="avatar-5"></li>
+								<li class="avatar-6"></li>
+								<li class="avatar-7"></li>
+								<li class="avatar-8"></li>
+							</ul>
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<a href="#" class="btn save primary">Save</a>
+				<a href="#" class="btn disconnect danger">Disconnect</a>
+			</div>
+		</div>
 	</body>
 </html>
