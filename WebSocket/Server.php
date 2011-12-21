@@ -289,6 +289,39 @@ class Server
 
 
 	/**
+	 * Get connected clients
+	 *
+	 * @return Client[]
+	 */
+	function getClients()
+	{
+		return $this->clients;
+	}
+
+
+	/**
+	 * Get host address
+	 *
+	 * @return string
+	 */
+	function getHost()
+	{
+		return $this->host;
+	}
+
+
+	/**
+	 * Get the port address
+	 *
+	 * @return int
+	 */
+	function getPort()
+	{
+		return $this->port;
+	}
+
+
+	/**
 	 * Listen for incoming socket connections and handle them
 	 *
 	 * TODO add timer callbacks to clients (tick)
@@ -359,7 +392,7 @@ class Server
 	{
 		$id     = (int)$socket;
 		$buffer = "";
-		$bytes  = socket_recv($socket, $buffer, 133693415, 0);
+		$bytes  = socket_recv($socket, $buffer, 1048576, 0);
 
 		if ($bytes === false) {
 			$this->logSocketError();
