@@ -103,6 +103,16 @@ class Server
 
 
 	/**
+	 * Create temporary file containing host and port
+	 * information that server was started with at the given path
+	 * false to not create
+	 *
+	 * @var bool|string
+	 */
+	protected $temporary = 'wshost.tmp';
+
+
+	/**
 	 * Create new WebSocket server instance.
 	 *
 	 * Configuration options:
@@ -169,6 +179,21 @@ class Server
 		}
 		$this->clientClass = $clientClass;
 
+		// temporary file name
+		if (array_key_exists('tempoaray', $config)) {
+			if (!$config['tempoaray']) $this->temporary = false;
+			else $this->temporary = (string)$config['tempoaray'];
+		}
+
+		// resolve temporary path
+		if ($this->temporary) {
+			if ($this->temporary[0] == '/' || preg_match('/^[a-zA-Z]:\\\/', $this->temporary)) {
+				$this->temporary = $this->temporary;
+			} else {
+				$this->temporary = getcwd() . '/' . $this->temporary;
+			}
+		}
+
 		// serializer
 		if (isset($config['serializer'])) {
 			$type = $config['serializer'];
@@ -214,6 +239,11 @@ class Server
 		$this->master                = $master;
 		$this->sockets[(int)$master] = $master;
 		$this->established           = microtime(true);
+
+		// write temporary
+		if ($this->temporary) {
+			file_put_contents($this->temporary, "ws://{$this->host}:{$this->port}");
+		}
 
 		// log
 		$this->log('Server started: ' . date('Y-m-d H:i:s'));

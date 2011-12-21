@@ -76,9 +76,17 @@ class Chatter extends WebSocket\Client
 
 // Create server
 try {
+	// detect host and port
+	$host = isset($_SERVER['argv'][1]) ? $_SERVER['argv'][1] : gethostname();
+	$port = 12345;
+	if (strpos($host, ':') !== false) {
+		list($host, $port) = explode(':', $host);
+	}
+
+	// create the server instance
 	$server = new WebSocket\Server(array(
-		'host'			=> '173.203.111.216',
-		'port'			=> 12345,
+		'host'			=> $host,
+		'port'			=> $port,
 		'clientClass'	=> 'Chatter',
 		'serializer'	=> 'json'
 	));

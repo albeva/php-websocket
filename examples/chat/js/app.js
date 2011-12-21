@@ -19,7 +19,7 @@ $(function() {
 		clients     = {},
 		connected   = false,
 		socket      = null,
-		host        = 'ws://173.203.111.216:12345',
+		host        = window.socket_host,
 		WSocket     = window.MozWebSocket || window.WebSocket,
 		myself      = null,
 		setSettings, send, connect, close, onOpen, onMessage, onClose, say;
