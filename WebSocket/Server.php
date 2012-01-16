@@ -100,17 +100,16 @@ class Server
 	 * @var Serializer[]
 	 */
 	protected $serializers = array();
-
-
+	
 	/**
-	 * Create temporary file containing host and port
-	 * information that server was started with at the given path
-	 * false to not create
-	 *
-	 * @var bool|string
-	 */
+	* Create temporary file containing host and port
+	* information that server was started with at the given path
+	* false to not create
+	*
+	* @var bool|string
+	*/
 	protected $temporary = 'wshost.tmp';
-
+	
 
 	/**
 	 * Create new WebSocket server instance.
@@ -178,7 +177,7 @@ class Server
 			throw new Exception("$clientClass does not extend WebSocker\\Client");
 		}
 		$this->clientClass = $clientClass;
-
+		
 		// temporary file name
 		if (array_key_exists('tempoaray', $config)) {
 			if (!$config['tempoaray']) $this->temporary = false;
@@ -235,11 +234,14 @@ class Server
 			$this->throwSocketError();
 		}
 
+        // remove time limit.
+        set_time_limit(0);
+
 		// set vars
 		$this->master                = $master;
 		$this->sockets[(int)$master] = $master;
 		$this->established           = microtime(true);
-
+		
 		// write temporary
 		if ($this->temporary) {
 			file_put_contents($this->temporary, "ws://{$this->host}:{$this->port}");
@@ -568,9 +570,7 @@ class Server
 	 */
 	function validateHeaders(array $headers)
 	{
-		return isset($headers['Upgrade'])
-			&& strtolower($headers['Upgrade']) == 'websocket'
-			&& isset($headers['Connection'])
+		return isset($headers['Connection'])
 			&& in_array('Upgrade', array_map('trim', explode(',', $headers['Connection'])));
 	}
 

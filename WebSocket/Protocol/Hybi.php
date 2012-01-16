@@ -170,6 +170,7 @@ class HyBi extends Protocol
 		// no support for multiframe
 		if (!$final) {
 			$this->log("No support for multi frame packets");
+            $this->log($data);
 			return false;
 		}
 
